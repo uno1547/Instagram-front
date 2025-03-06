@@ -22,7 +22,7 @@ function App() {
     // 이게 서버에 요청보내고 응답 받는거라면?
   }
   const [isAuth, setIsAuth] = useState(tokenAtClient())
-
+  // 프론트의 두번째 커밋
   // const [userID, setUserID] = useState(null)
   
   // console.log(userID);
