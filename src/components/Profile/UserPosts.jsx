@@ -2,7 +2,7 @@
 function UserPosts() {
   return(
     <>
-      <h1>게시글들</h1>
+      {/* <h1>게시글들</h1> */}
     </>
   )
 }
