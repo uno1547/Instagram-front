@@ -5,10 +5,11 @@ import Input from '../Input/Input'
 import Button from '../Button/Button'
 
 import styles from '../LoginForm/LoginForm.module.css' //로그인폼이랑 스타일 똑같으니 그대로사용
-import { isValuesValid, isContactValid, isPasswordValid, isNickNameValid } from '../../functions/validation/checkValid'
+import { isValuesValid } from '../../functions/validation/checkValid'
 
 const SignupForm = () => {
-  const [contact, setContact] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
   const [nickName, setNickName] = useState("")
@@ -16,9 +17,14 @@ const SignupForm = () => {
   
   const navigate = useNavigate()
 
-  const contactInputHandler = (evt) => {
-    const newContact = evt.target.value
-    setContact(newContact)
+  const phoneNumberInputHandler = (evt) => {
+    const newPhoneNum = evt.target.value
+    setPhoneNumber(newPhoneNum)
+  }
+
+  const emailInputHandler = (evt) => {
+    const newEmail = evt.target.value
+    setEmail(newEmail)
   }
 
   const passwordInputHandler = (evt) => {
@@ -38,7 +44,7 @@ const SignupForm = () => {
 
   const submitHandler = async (evt) => {
     evt.preventDefault()
-    const message = await isValuesValid({ contact, password, name, nickName })
+    const message = isValuesValid({ phoneNumber, email, password, name, nickName })
     if(message != true) {
       setWrongValue(message)
       return
@@ -52,7 +58,7 @@ const SignupForm = () => {
     const json = JSON.stringify(entry)
 
     try {
-      const response = await fetch("http://localhost:4000/api/users", {
+      const response = await fetch("http://localhost:8080/api/user", {
         method : "POST",
         headers : {
           'Content-Type' : 'application/json'
@@ -74,7 +80,8 @@ const SignupForm = () => {
       <h2 className={styles.title}>Instagram</h2>
       <form className={styles.form} onSubmit={submitHandler}>
         <div className={`${styles.field} ${styles.inputField}`}>
-          <Input name = "contact"  placeholder={"전화번호 또는 이메일 주소"} handler={contactInputHandler} value={contact}/>
+          <Input name = "phoneNumber"  type="text" placeholder={"전화번호"} handler={phoneNumberInputHandler} value={phoneNumber}/>
+          <Input name = "email" type="text" placeholder={"이메일 주소"} handler={emailInputHandler} value={email}/>
           <Input name = "password"  type="password" placeholder={"비밀번호"} handler={passwordInputHandler} value={password}/>
           <Input name = "name" type="text" placeholder={"성명"} handler={nameInputHandler} value={name}/>
           <Input name = "nickName" type="text" placeholder={"사용자 이름"} handler={nickNameInputHandler} value={nickName}/>
