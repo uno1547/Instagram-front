@@ -52,6 +52,9 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.list {
   cursor: pointer;
 }
 
