@@ -24,16 +24,39 @@ const follow = () => {
 // }
 
 const FollowButton = ({ isFollwee, userID }) => {
-  console.log(userID);
   const [isFollow, setIsFollow] = useState(isFollwee)
   const [isLoading, setIsLoading] = useState(false)
-
+  
+  // console.log(userID, isFollow);
   const toggleFollow = async () => {
+
     setIsLoading(true)
+
+    // const sleep = await new Promise((res, rej) => {
+    //   setTimeout(() => {
+    //     res()
+    //   }, 500)
+    // })
+
     try {
-      const response = await follow(isFollow, userID)
+      // const response = await follow(isFollow, userID)
+      const response = await fetch(`http://localhost:8080/api/users/${userID}/follow`, {
+        method : isFollow ? "DELETE" : "POST",
+        headers : {
+          Authorization : `Bearer ${localStorage.getItem("access_token")}`
+        }
+      })
+      
+      if(!response.ok) {
+        const {message} = await response.json() // json에러메시지에만 유효!! 여기서 잘못하면 catch로 넘어감
+        alert(message)
+        return
+      }
+
       setIsFollow(prev => !prev)
+      // alert(message)
     } catch(err) {
+      console.error(err);
       alert("팔로우/팔로잉 실패!")
     } finally {
       setIsLoading(false)

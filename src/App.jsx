@@ -37,6 +37,7 @@ function App() {
             <Route path='/search' element = {<SearchPage/>}></Route>
             <Route path='/create' element = {<CreatePage/>}></Route>
             <Route path='/:userID' element = {<ProfilePage/>}></Route>
+            <Route path='/dynamic/:param' element = {<Test/>}></Route>
             <Route path='/test' element = {<List2/>}></Route>
             <Route path='*' element = {<Navigate to="/"/>}></Route> 
           </Routes>

@@ -22,8 +22,8 @@ const Sidebar = () => {
         return
       }
       const data = await response.json() //얘 조심해야됌 response가 비정상이라면 json()을 시도하지못하게 해야함 위에서 조기리턴
-      const userID = data.message
-      // const userID = data.userID
+      // const userID = data.message
+      const userID = data.userID
       setUserID(userID)
     } catch(err) {
       console.log(err);

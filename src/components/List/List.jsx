@@ -112,6 +112,14 @@ const followings = [
 // console.log(arr);
 
 const List = ({ handler, toFind }) => {
+
+  useEffect(() => {
+    // console.log('list mount');
+    return () => {
+      // console.log('list unmount');
+    }
+  }, [])
+
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [keyWord, setKeyWord] = useState("")
@@ -120,15 +128,16 @@ const List = ({ handler, toFind }) => {
   // console.log('profilePage의', userID, '여긴 List');
 
   const fetchData = async () => {
-    console.log(toFind, '보기');
+    // console.log(toFind, '보기');
     try {
       const response = await fetch(`http://localhost:8080/api/users/${userID}/${toFind}`)
       const data = await response.json()
+      // console.log(data);
       setData(data)
       // setData(arr2)
 
     } catch(err) {
-
+      console.error(err)
     } finally {
       setIsLoading(false)
     }
@@ -165,7 +174,7 @@ const List = ({ handler, toFind }) => {
         <span className={style.text}>팔로워</span>
         <button className={style.closeButton} onClick={e => {
           e.stopPropagation()
-          console.log('x버튼 트리거');
+          // console.log('x버튼 트리거');
           // if(e.target == e.currentTarget) handler()
           handler()
         }}>X</button>
