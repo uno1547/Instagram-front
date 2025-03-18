@@ -10,16 +10,10 @@ import UserPosts from "../../components/Profile/UserPosts"
 import Skeleton from "../../components/Skeleton/Skeleton"
 import style from './ProfilePage.module.css'
 import NotFoundPage from "../NotFound/NotFoundPage"
+import { responsiveFontSizes } from "@mui/material"
 
 
 const ProfilePage = () => {
-  // console.log('ProfilePage render!!');
-  useEffect(() => {
-    // console.log('ProfilePage mount!!');
-    return () => {
-      // console.log('ProfilePage unmount!!');
-    }
-  }, [])
   /*
     params로 넘어온 userId에 대해서 정보가 필요함 1) 존재하는 사용자인지아닌지 2) 존재하는 사용자면 본인인지 제3자인지 3) 제3자면 팔로우가 되있는사람인지 아닌사람인지 4)숫자와 소개글
     서버에게 물어보자 존재하는지안하는지 res {status : 400, message : 존재하지않는 사용자} 처럼
@@ -30,38 +24,50 @@ const ProfilePage = () => {
     isLoading false > 리랜더링 > 1. userData있으면 표시, userPosts패칭시작
     isLoading false > 리랜더링 > 2. userData없으면 NotFound페이지 표시
   */
-  const {userID} = useParams()
-  // console.log('profilePage의 params 값은', userID);
+  const {userID} = useParams() 
+  // console.log('profilePage의 params 값은', nickName);
   const [isLoading, setLoading] = useState(true)
   const [userData, setUserData] = useState(null)
+  const [userPosts, setUserPosts] = useState(null)
 
   const getProfileInfos = async () => {
+    setLoading(true) //이게 먼저 먹어서 스켈레톤이 1초가량 떠있음
     // console.log('데이터 패치!!!');
     // console.log('getProfileInfos내에서 다시 로딩시작');
     try {
-      const sleep = await new Promise((res, rej) => {
-        setTimeout(() => {
-          res()
-        }, 1000)
-      })
+      // const sleep = await new Promise((res, rej) => {
+      //   setTimeout(() => {
+      //     res()
+      //   }, 1000)
+      // })
       
-      const response = await fetch(`http://localhost:8080/api/users/${userID}/profile`, {
+      // 프로필정보요청 먼저 던져놓음(promise생성)
+      // 포스트요청 먼저 던져놓음(promise생성)
+      // 던져놨던 프로필정보 기다림
+      // 프로필정보 도착하자마자 UserInfo랜더링
+      // 던져놨던 포스트요청은 background에서 완료되면 알아서 state변경
+
+      console.log('user data 패치시작')
+      const fetchUserData = fetch(`http://localhost:8080/api/users/${userID}/profile`, {
         headers : {
           Authorization : `Bearer ${localStorage.getItem("access_token")}`
         }
-      })
+      }).then(response => response.ok ? response.json() : null)
 
-      if(!response.ok) {
-        /*오류코드 생기면 처리*/
-        // alert("닉네임 불러오는데 오류생김!")
-        return
-      }
-      
-      const data = await response.json() //data 준비완료
-      // console.log(data);
-      setUserData(data)
+      console.log('user post 패치시작')
+      const fetchUserPosts = fetch(`http://localhost:8080/api/users/${userID}/posts`, {
+        headers : {
+          Authorization : `Bearer ${localStorage.getItem("access_token")}`
+        }
+      }).then(response => response.ok ? response.json() : null)
+        .then(posts => setUserPosts(posts.data.userPosts))
+
+      const userData = await fetchUserData
+      setUserData(userData)
+
     } catch (error) {
-      // console.log(error);
+
+      console.error(error);
     } finally {
       setLoading(false)
     }
@@ -69,9 +75,9 @@ const ProfilePage = () => {
 
   useEffect(() => {
     // console.log('바뀐 userID로 effect!!');
-    setLoading(true) //이게 먼저 먹어서 스켈레톤이 1초가량 떠있음
-    setUserData(null) // 이거 왜 넣었었지??? 이게 없으면 존재하는 프로필 > 존재하지않는 프로필 가면 이름만 바뀜, datas를 이전존재하는프로필꺼 유지되므로 초기화해줘야 데이터패칭이후, 없는 사용자 페이지띄울수있음
+    // setLoading(true) //이게 먼저 먹어서 스켈레톤이 1초가량 떠있음
     getProfileInfos()
+    setUserData(null) // 이거 왜 넣었었지??? 이게 없으면 존재하는 프로필 > 존재하지않는 프로필 가면 이름만 바뀜, datas를 이전존재하는프로필꺼 유지되므로 초기화해줘야 데이터패칭이후, 없는 사용자 페이지띄울수있음
   }, [userID]) // userID가 변하며 리렌더링을 트리거하면, isLoading, userData도 초기화 해줘야함!!!
 
   return(
@@ -90,10 +96,11 @@ const ProfilePage = () => {
     </div> : // 로딩완료시 userData에 따라 랜더링
     userData ? ( // 얘 간결하게 할수있을듯? 이게 간결이구나 ㅋㅋㅋㅋ
       <>
-      <UserContext.Provider value={{userID, isYou : userData.isYou}}>
-        <div className={style.inner}>
-          <UserInfo datas={userData}/>
-          <UserPosts />
+      <UserContext.Provider value={{userID, isYou : userData.isYou, getProfileInfos}}>
+        <div className = {style.inner}>
+          <UserInfo datas = {userData}/>
+          {/* 이단계에서는 썸네일 url, post id가 맞을듯 간단히 섬네일만 표시 */}
+          <UserPosts datas = {userPosts}/>
         </div>
         {/* 여기서부터 */}
         {/* <UserInfo datas={{

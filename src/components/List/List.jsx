@@ -171,7 +171,7 @@ const List = ({ handler, toFind }) => {
   return (
     <div className={style.modal}>
       <div className={style.head}>
-        <span className={style.text}>팔로워</span>
+        <span className={style.text}>{toFind == "followers" ? "팔로워" : "팔로잉"}</span>
         <button className={style.closeButton} onClick={e => {
           e.stopPropagation()
           // console.log('x버튼 트리거');

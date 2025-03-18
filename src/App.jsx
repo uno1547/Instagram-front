@@ -30,7 +30,7 @@ function App() {
         // 인증된 유저들라우팅
         <>
           <Sidebar/>
-          <div className="inner">
+          {/* <div className="inner"> */}
 
           <Routes>
             <Route path='/' element = {<HomePage/>}></Route>
@@ -38,11 +38,11 @@ function App() {
             <Route path='/create' element = {<CreatePage/>}></Route>
             <Route path='/:userID' element = {<ProfilePage/>}></Route>
             <Route path='/dynamic/:param' element = {<Test/>}></Route>
-            <Route path='/test' element = {<List2/>}></Route>
+            <Route path='/test' element = {<Test/>}></Route>
             <Route path='*' element = {<Navigate to="/"/>}></Route> 
           </Routes>
 
-          </div>
+          {/* </div> */}
         </>        
       ) : (
         <Routes>
