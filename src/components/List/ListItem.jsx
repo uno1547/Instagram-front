@@ -6,7 +6,7 @@ import { useState, useContext, use } from 'react'
 import { UserContext } from '../../context/UserContext.js'
 
 const ListItem = ({ member }) => {
-  const {isYou, getProfileInfos} = useContext(UserContext)
+  const {isYou} = useContext(UserContext)
   // console.log(isYou);
   const {userID} = member
   // console.log(userID);

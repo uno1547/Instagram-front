@@ -1,33 +1,10 @@
 import { useState } from "react";
 import Button from "./Button";
-/*
- * Button컴포넌트를 활용하되 state를 추가하고
- * handler 를 추가함
- * 
- */
-const follow = () => {
-  // 실제로는 서버에 팔로우 요청을하는 코드
-  return new Promise((res, rej) => {
-    setTimeout(() => {
-      // rej()
-      res()
-    }, 2000)
-  })
-}
-
-// const follow = async (isFollow, userID) => {
-//   const response = await fetch(`/api/follow/:${userID}`, {
-//     method : isFollow ? "POST" : "DELETE",
-//   })
-//   // 실제로는 서버에 팔로우 요청을하는 코드
-//   // 해당 userID에, 요청을 보냄?
-// }
 
 const FollowButton = ({ isFollwee, userID }) => {
   const [isFollow, setIsFollow] = useState(isFollwee)
   const [isLoading, setIsLoading] = useState(false)
   
-  // console.log(userID, isFollow);
   const toggleFollow = async () => {
 
     setIsLoading(true)
@@ -39,7 +16,6 @@ const FollowButton = ({ isFollwee, userID }) => {
     })
 
     try {
-      // const response = await follow(isFollow, userID)
       const response = await fetch(`http://localhost:8080/api/users/${userID}/follow`, {
         method : isFollow ? "DELETE" : "POST",
         headers : {
@@ -54,7 +30,6 @@ const FollowButton = ({ isFollwee, userID }) => {
       }
 
       setIsFollow(prev => !prev)
-      // alert(message)
     } catch(err) {
       console.error(err);
       alert("팔로우/팔로잉 실패!")
