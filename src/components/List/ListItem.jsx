@@ -14,25 +14,23 @@ const ListItem = ({ member }) => {
 
 
   const unfollow = async () => {
-
-    // const sleep = await new Promise((res, rej) => {
-    //   setTimeout(() => {
-    //     res()
-    //   }, 1000)
-    // })
-
-    const response = await fetch(`http://localhost:8080/api/users/${userID}/follow`, {
-      method : "DELETE",
-      headers : {
-        Authorization : `Bearer ${localStorage.getItem("access_token")}`
+    try {
+      const response = await fetch(`http://localhost:8080/api/followers/${userID}`, {
+        method : "DELETE",
+        headers : {
+          Authorization : `Bearer ${localStorage.getItem("access_token")}`
+        }
+      })
+      // 비정상일경우
+      if(!response.ok) {
+        alert('알수없는 오류가 생겼어요!')
+        return 
       }
-    })
-    const data = await response.json()
-    const success = data.success
-    // console.log('unfollow!');
-    if(success) { // 얘를 통해 언팔 실패하면 자연스럽게 버튼비활이안됌
-      // getProfileInfos()
+      // 성공일 경우
       setIsUnfollowed(true)
+      
+    } catch (err) {
+      console.error(err)
     }
   }
 
