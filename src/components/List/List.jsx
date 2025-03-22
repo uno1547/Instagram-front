@@ -122,6 +122,7 @@ const List = ({ handler, toFind }) => {
 
   const fetchData = async () => {
     try {
+      console.log(userID, toFind);
       const response = await fetch(`http://localhost:8080/api/users/${userID}/${toFind}`)
       const datas = await response.json()
       const list = datas.data
@@ -187,7 +188,7 @@ const List = ({ handler, toFind }) => {
       filteredFollowers.length ? (
         filteredFollowers.map((el, idx) => {
           // return <div>{el.name}</div>
-          return <ListItem member = {el} key={idx}/>
+          return <ListItem member = {el} key={idx} toFind = {toFind}/>
           // 이거 나중에 문제생기면 key 값용 entity ID가져와서 쓸수도
         })
       ):(

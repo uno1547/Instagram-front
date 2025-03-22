@@ -16,15 +16,16 @@ import style from './ProfilePage.module.css'
 const ProfilePage = () => {
   // console.log('profilepage render');
   const {userID} = useParams() 
+  console.log(userID);
   // console.log('profilePage params', userID);
   const [isLoading, setLoading] = useState(true)
 
   const [userData, setUserData] = useState(null)
   const [userPosts, setUserPosts] = useState(null)
   // console.log(isLoading, userData, userPosts);
-  console.log(isLoading);
-  console.log(userData);
-  console.log(userPosts);
+  // console.log(isLoading);
+  // console.log(userData);
+  // console.log(userPosts);
   const getProfileInfos = async () => {
     setLoading(true)
     setUserData(null)
@@ -59,11 +60,11 @@ const ProfilePage = () => {
         // .then(posts => setUserPosts(posts.data.userPosts)) // 얘 까지 완료되도 최대2초 소요
 
       // console.log('after start fetch');
-      const userData = await fetchUserData // 1초소요
+      const userDatas = await fetchUserData // 1초소요
       // console.log(userData);
-      setUserData(userData.data)
-      const userPosts = await fetchUserPosts // 얘까지 기다리면 isLoading이 false일틈이없어서 blinking사라지긴함 but 
-      setUserPosts(userPosts.data.userPosts)
+      setUserData(userDatas.data)
+      const userPostDatas = await fetchUserPosts // 얘까지 기다리면 isLoading이 false일틈이없어서 blinking사라지긴함 but 
+      setUserPosts(userPostDatas.posts)
 
     } catch (error) {
       console.error(error);

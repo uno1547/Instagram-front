@@ -5,17 +5,20 @@ import { Link } from 'react-router-dom'
 import { useState, useContext, use } from 'react'
 import { UserContext } from '../../context/UserContext.js'
 
-const ListItem = ({ member }) => {
+const ListItem = ({ member, toFind }) => {
   const {isYou} = useContext(UserContext)
   // console.log(isYou);
   const {userID} = member
+  console.log(toFind);
   // console.log(userID);
   const [isUnfollowed, setIsUnfollowed] = useState(false)
 
 
   const unfollow = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/followers/${userID}`, {
+      const endPoint = toFind == "followers" ? `http://localhost:8080/api/users/${userID}/removeFollower` : `http://localhost:8080/api/users/${userID}/follow`
+      console.log(endPoint);
+      const response = await fetch(endPoint, {
         method : "DELETE",
         headers : {
           Authorization : `Bearer ${localStorage.getItem("access_token")}`
@@ -28,8 +31,9 @@ const ListItem = ({ member }) => {
       }
       // 성공일 경우
       setIsUnfollowed(true)
-      
+
     } catch (err) {
+      console.log('네트워크 문제');
       console.error(err)
     }
   }

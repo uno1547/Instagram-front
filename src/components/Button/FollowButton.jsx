@@ -34,7 +34,7 @@ const FollowButton = ({ isFollwee, userID }) => {
       console.error(err);
       alert("팔로우/팔로잉 실패!")
     } finally {
-      setIsLoading(false)
+      setIsLoading(false) //실패하던 성공하던 원래 버튼으로 돌아와야함
     }
   }
 
