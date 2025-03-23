@@ -64,7 +64,7 @@ const ProfilePage = () => {
       // console.log(userData);
       setUserData(userDatas.data)
       const userPostDatas = await fetchUserPosts // 얘까지 기다리면 isLoading이 false일틈이없어서 blinking사라지긴함 but 
-      setUserPosts(userPostDatas.posts)
+      setUserPosts(userPostDatas.data)
 
     } catch (error) {
       console.error(error);

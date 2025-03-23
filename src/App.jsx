@@ -42,7 +42,8 @@ function App() {
       }
 
       const data = await response.json()
-      const curUserID = data.userID 
+      // const curUserID = data.userID 
+      const curUserID = data.data 
       setcurUserID(curUserID)
 
     } catch (err) {
