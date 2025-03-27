@@ -19,7 +19,6 @@ const ProfilePage = () => {
   console.log(userID);
   // console.log('profilePage params', userID);
   const [isLoading, setLoading] = useState(true)
-
   const [userData, setUserData] = useState(null)
   const [userPosts, setUserPosts] = useState(null)
   // console.log(isLoading, userData, userPosts);

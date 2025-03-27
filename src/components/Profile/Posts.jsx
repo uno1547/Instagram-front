@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { useContext } from "react"
 import { ModalContext } from "../../context/ModalContext"
 import { PostModalContext } from "../../context/PostModalContext"
+import { UserContext } from "../../context/UserContext"
 
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ModeCommentOutlinedIcon from '@mui/icons-material/ModeCommentOutlined';
@@ -24,7 +25,8 @@ const Article = () => {
   const [info, setInfo] = useState({})
   
   const {isOpen, modalHandler} = useContext(ModalContext)
-  const {postID, userID} = useContext(PostModalContext)
+  const {userID} = useContext(UserContext)
+  const {postID} = useContext(PostModalContext)
   console.log(postID, userID, 'contetext');
   console.log(info);
   const getInfos = async () => {
@@ -94,7 +96,7 @@ const Article = () => {
                     {/* <div className={modalStyle["profile-img"]}>프로필사진</div> */}
                     {/* <div className={modalStyle.name}>{comment.user}</div> */}
                     <Link to = {`/${comment.user}`} className={modalStyle.name}>{comment.user}</Link>
-                    <div>{comment.content}</div>
+                    <div>{comment.context}</div>
                   </div>
                 )
               })}
@@ -109,7 +111,7 @@ const Article = () => {
             </div>
             <div className={modalStyle["post-meta"]}>
               {/* <span>{info.likes}</span> */}
-              <span>{"2025년 3월 24일"}</span>
+              <span>{info.createdAt}</span>
             {/* <Skeleton type={"image"} width={"40px"} height={"40px"}/> */}
             </div>
             <div className={modalStyle["post-comment-form"]}>
@@ -128,8 +130,9 @@ const Article = () => {
 }
 
 const Posts = ({ data }) => {
+  console.log(data);
   const [isOpen, setIsOpen] = useState(false)
-  const {id : postID, userID} = data
+  const {postID} = data // 여기서 명세대로면 userID가 없음
   // console.log(postID, userID);
   // (바둑판에 썸네일은 다 마운트 된 상태) 썸네일을 클릭시 게시글 모달창이 열리고, ^^
 
@@ -139,7 +142,7 @@ const Posts = ({ data }) => {
 
   // console.log('post랜더링!');
   return (
-    <PostModalContext.Provider value={{postID, userID}}>
+    <PostModalContext.Provider value={{postID}}>
       <ModalContext.Provider value={{isOpen, modalHandler}}>
         <div className={style.item} onClick={modalHandler}>{}</div>
         {isOpen ? createPortal(<Article/>, document.body) : null}
