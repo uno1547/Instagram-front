@@ -10,7 +10,7 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import style from "./LikeButton.module.css"
 
 const LikeButton = ({info, secondOpen, setSecondOpen}) => {
-  const [isLiked, setIsLiked] = useState(info.isLiked)
+  const [isLiked, setIsLiked] = useState(info.liked)
   const [likes, setLikes] = useState(info.likes)
 
   // const [isOpen, setIsOpen] = useState(false) // 얘를 ModalContext로 사용하면 다른 컴포넌트에서 이를 공유하게 되는거나?
